@@ -205,10 +205,30 @@ if (!$currentUserResponse->success) {
 }
 
 print "User: ".$currentUserResponse->user->username."\n";
-print "Permission is_write_user_actions :".($currentUserResponse->permissions->is_write_user_actions  ? 'yes':'no')."\n";
-print "Permission is_write_user_profile :".($currentUserResponse->permissions->is_write_user_profile ? 'yes':'no')."\n";
-print "Permission is_write_calendar :".($currentUserResponse->permissions->is_write_calendar  ? 'yes':'no')."\n";
+print "Permission for app is_write_user_actions :".($currentUserResponse->permissions->is_write_user_actions  ? 'yes':'no')."\n";
+print "Permission for app is_write_user_profile :".($currentUserResponse->permissions->is_write_user_profile ? 'yes':'no')."\n";
+print "Permission for app is_write_calendar :".($currentUserResponse->permissions->is_write_calendar  ? 'yes':'no')."\n";
 
+
+
+################### LETS GO!
+print "Getting Current User On Site, Please wait ...\n\n";
+$currentUserOnSiteResponse = getGetToSiteAPIResponseJSON('/api2/current_user_on_site.json',array(
+			'app_token'=>$APP_TOKEN,
+			'user_token'=>$USER_TOKEN,
+			'user_secret'=>$USER_SECRET,
+		));
+
+
+if (!$currentUserOnSiteResponse->success) {
+	var_dump($currentUserOnSiteResponse);
+	die("There was a problem getting the user on site info\n\n");
+}
+
+print "Site: ".$currentUserOnSiteResponse->site->title."\n";
+print "Permission on site is_write_user_actions :".($currentUserOnSiteResponse->permissions->is_write_user_actions  ? 'yes':'no')."\n";
+print "Permission on site is_write_user_profile :".($currentUserOnSiteResponse->permissions->is_write_user_profile ? 'yes':'no')."\n";
+print "Permission on site is_write_calendar :".($currentUserOnSiteResponse->permissions->is_write_calendar  ? 'yes':'no')."\n";
 
 ################### Get area 
 print "Getting Area, Please wait ...\n\n";
@@ -223,5 +243,18 @@ $areaJSON = getGetToSiteAPIResponseJSON('/api2/area/'.$areaID.'/info.json',array
 var_dump($areaJSON);
 
 
+################### Posting area 
+if ($currentUserOnSiteResponse->permissions->is_write_calendar) {
+	print "Posting Area, Please wait ...\n\n";
+	$areaWriteJSON = getPostToSiteAPIResponseJSON('/api2/area/'.$areaID.'/info.json',array(
+				'app_token'=>$APP_TOKEN,
+				'user_token'=>$USER_TOKEN,
+				'user_secret'=>$USER_SECRET,
+				'title'=>$areaJSON->area->title." [API]",
+			));
+
+
+	var_dump($areaWriteJSON);
+}
 
 
