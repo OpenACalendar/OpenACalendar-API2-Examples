@@ -146,6 +146,7 @@ if (!$USER_TOKEN && !$USER_SECRET) {
 			'app_token'=>$APP_TOKEN,
 			'app_secret'=>$APP_SECRET,
 			'callback_display'=>'true',
+			'scope'=>'permission_write_calendar',
 		));
 
 	if (!$response->success) {
