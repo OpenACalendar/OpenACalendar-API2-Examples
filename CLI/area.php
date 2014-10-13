@@ -146,7 +146,7 @@ if (!$USER_TOKEN && !$USER_SECRET) {
 			'app_token'=>$APP_TOKEN,
 			'app_secret'=>$APP_SECRET,
 			'callback_display'=>'true',
-			'scope'=>'permission_write_calendar',
+			'scope'=>'permission_editor',
 		));
 
 	if (!$response->success) {
@@ -206,10 +206,7 @@ if (!$currentUserResponse->success) {
 }
 
 print "User: ".$currentUserResponse->user->username."\n";
-print "Permission for app is_write_user_actions :".($currentUserResponse->permissions->is_write_user_actions  ? 'yes':'no')."\n";
-print "Permission for app is_write_user_profile :".($currentUserResponse->permissions->is_write_user_profile ? 'yes':'no')."\n";
-print "Permission for app is_write_calendar :".($currentUserResponse->permissions->is_write_calendar  ? 'yes':'no')."\n";
-
+print "Permission for app is_editor :".($currentUserResponse->permissions->is_editor  ? 'yes':'no')."\n";
 
 
 ################### LETS GO!
@@ -227,9 +224,7 @@ if (!$currentUserOnSiteResponse->success) {
 }
 
 print "Site: ".$currentUserOnSiteResponse->site->title."\n";
-print "Permission on site is_write_user_actions :".($currentUserOnSiteResponse->permissions->is_write_user_actions  ? 'yes':'no')."\n";
-print "Permission on site is_write_user_profile :".($currentUserOnSiteResponse->permissions->is_write_user_profile ? 'yes':'no')."\n";
-print "Permission on site is_write_calendar :".($currentUserOnSiteResponse->permissions->is_write_calendar  ? 'yes':'no')."\n";
+print "Permission on site is_editor :".($currentUserOnSiteResponse->permissions->is_editor  ? 'yes':'no')."\n";
 
 ################### Get area 
 print "Getting Area, Please wait ...\n\n";
@@ -245,7 +240,7 @@ var_dump($areaJSON);
 
 
 ################### Posting area 
-if ($currentUserOnSiteResponse->permissions->is_write_calendar) {
+if ($currentUserOnSiteResponse->permissions->is_editor) {
 	print "Posting Area, Please wait ...\n\n";
 	$areaWriteJSON = getPostToSiteAPIResponseJSON('/api2/area/'.$areaID.'/info.json',array(
 				'app_token'=>$APP_TOKEN,
