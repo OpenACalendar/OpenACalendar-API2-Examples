@@ -3,9 +3,7 @@
 include 'conf.php';
 include 'lib.php';
 
-if (!$USER_TOKEN && !$USER_SECRET) {
-	die("No User Token and User Secret\n");
-}
+
 
 ################### LETS GO!
 print "Getting Current User, Please wait ...\n\n";
@@ -42,31 +40,36 @@ if (!$currentUserOnSiteResponse->success) {
 print "Site: ".$currentUserOnSiteResponse->site->title."\n";
 print "Permission on site is_editor :".($currentUserOnSiteResponse->permissions->is_editor  ? 'yes':'no')."\n";
 
-################### Get area 
-print "Getting Area, Please wait ...\n\n";
-$areaID = 1;
-$areaJSON = getGetToSiteAPIResponseJSON('/api2/area/'.$areaID.'/info.json',array(
+################### Get venue 
+print "Getting Venue, Please wait ...\n\n";
+$venueID = 1;
+$venueJSON = getGetToSiteAPIResponseJSON('/api2/venue/'.$venueID.'/info.json',array(
 			'app_token'=>$APP_TOKEN,
 			'user_token'=>$USER_TOKEN,
 			'user_secret'=>$USER_SECRET,
 		));
 
 
-var_dump($areaJSON);
+var_dump($venueJSON);
 
 
-################### Posting area 
+################### Posting venue 
 if ($currentUserOnSiteResponse->permissions->is_editor) {
-	print "Posting Area, Please wait ...\n\n";
-	$areaWriteJSON = getPostToSiteAPIResponseJSON('/api2/area/'.$areaID.'/info.json',array(
+	print "Posting Venue, Please wait ...\n\n";
+	$venueWriteJSON = getPostToSiteAPIResponseJSON('/api2/venue/'.$venueID.'/info.json',array(
 				'app_token'=>$APP_TOKEN,
 				'user_token'=>$USER_TOKEN,
 				'user_secret'=>$USER_SECRET,
-				'title'=>$areaJSON->area->title." [API]",
+				'title'=>$venueJSON->venue->title." [API]",
+				'description'=>$venueJSON->venue->description." [API]",
+				'address'=>$venueJSON->venue->address." [API]",
+				'address_code'=>$venueJSON->venue->address_code." [API]",
+				'lat'=>$venueJSON->venue->lat + 0.5,
+				'lng'=>$venueJSON->venue->lng + 0.5,
 			));
 
 
-	var_dump($areaWriteJSON);
+	var_dump($venueWriteJSON);
 }
 
 

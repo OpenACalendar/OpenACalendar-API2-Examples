@@ -1,0 +1,11 @@
+<?php
+
+$APP_TOKEN = 'appt';
+$APP_SECRET = 'apps';
+// For Single Site, set to the same
+// For multi site, 
+$INDEX_SITE_URL = 'http://hasadevcalendar.co.uk:20153';
+$SITE_SITE_URL = 'http://hasadevcalendar.co.uk:20153';
+// If you start with these blank, you will be guided to create them.
+$USER_TOKEN = NULL;
+$USER_SECRET = NULL;

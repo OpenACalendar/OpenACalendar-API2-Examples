@@ -3,9 +3,7 @@
 include 'conf.php';
 include 'lib.php';
 
-if (!$USER_TOKEN && !$USER_SECRET) {
-	die("No User Token and User Secret\n");
-}
+
 
 ################### LETS GO!
 print "Getting Current User, Please wait ...\n\n";
@@ -42,31 +40,33 @@ if (!$currentUserOnSiteResponse->success) {
 print "Site: ".$currentUserOnSiteResponse->site->title."\n";
 print "Permission on site is_editor :".($currentUserOnSiteResponse->permissions->is_editor  ? 'yes':'no')."\n";
 
-################### Get area 
-print "Getting Area, Please wait ...\n\n";
-$areaID = 1;
-$areaJSON = getGetToSiteAPIResponseJSON('/api2/area/'.$areaID.'/info.json',array(
+################### Get event 
+print "Getting Event, Please wait ...\n\n";
+$eventID = 1;
+$eventJSON = getGetToSiteAPIResponseJSON('/api2/event/'.$eventID.'/info.json',array(
 			'app_token'=>$APP_TOKEN,
 			'user_token'=>$USER_TOKEN,
 			'user_secret'=>$USER_SECRET,
 		));
 
 
-var_dump($areaJSON);
+var_dump($eventJSON);
 
 
-################### Posting area 
+################### Posting event 
 if ($currentUserOnSiteResponse->permissions->is_editor) {
-	print "Posting Area, Please wait ...\n\n";
-	$areaWriteJSON = getPostToSiteAPIResponseJSON('/api2/area/'.$areaID.'/info.json',array(
+	print "Posting Event, Please wait ...\n\n";
+	$eventWriteJSON = getPostToSiteAPIResponseJSON('/api2/event/'.$eventID.'/info.json',array(
 				'app_token'=>$APP_TOKEN,
 				'user_token'=>$USER_TOKEN,
 				'user_secret'=>$USER_SECRET,
-				'title'=>$areaJSON->area->title." [API]",
+				'summary'=>$eventJSON->event->summary." [API]",
+				'url'=>($eventJSON->event->url ? $eventJSON->event->url."?api=1" : "http://ican.openacalendar.org/"),
+				'ticket_url'=>($eventJSON->event->ticket_url ? $eventJSON->event->ticket_url."?api=1" : "http://ican.openacalendar.org/"),
 			));
 
 
-	var_dump($areaWriteJSON);
+	var_dump($eventWriteJSON);
 }
 
 
